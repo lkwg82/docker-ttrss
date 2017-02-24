@@ -67,7 +67,7 @@ if (!dbcheck($config)) {
     $pdo = dbconnect($super);
 
     if ($super['DB_TYPE'] === 'mysql') {
-        $pdo->exec('CREATE DATABASE ' . ($config['DB_NAME']));
+        $pdo->exec('CREATE DATABASE IF NOT EXISTS ' . ($config['DB_NAME']));
         $pdo->exec('GRANT ALL PRIVILEGES ON ' . ($config['DB_NAME']) . '.* TO ' . $pdo->quote($config['DB_USER']) . '@"%" IDENTIFIED BY ' . $pdo->quote($config['DB_PASS']));
     } else {
         $pdo->exec('CREATE ROLE ' . ($config['DB_USER']) . ' WITH LOGIN PASSWORD ' . $pdo->quote($config['DB_PASS']));
