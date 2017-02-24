@@ -16,8 +16,7 @@ services:
  db:
   image: mariadb:10.1
   environment:
-    #    MYSQL_DATABASE: ttrss
+    MYSQL_DATABASE: ttrss
     MYSQL_ROOT_PASSWORD: rootpass
     MYSQL_USER: user
     MYSQL_PASSWORD: userpass
-
