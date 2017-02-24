@@ -29,10 +29,10 @@ RUN curl -SL https://tt-rss.org/gitlab/fox/tt-rss/repository/archive.tar.gz?ref=
 RUN cp config.php-dist config.php
 
 # expose only nginx HTTP port
-EXPOSE 80
+EXPOSE 8080
 
 # complete path to ttrss
-ENV SELF_URL_PATH http://localhost
+ENV SELF_URL_PATH http://localhost:8080
 
 # expose default database credentials via ENV in order to ease overwriting
 ENV DB_NAME ttrss

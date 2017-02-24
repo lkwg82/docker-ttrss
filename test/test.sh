@@ -28,7 +28,7 @@ docker-compose up -d ttrss
 #docker-compose logs ttrss
 sleep 1
 
-cmd='docker-compose exec ttrss curl -v http://localhost/'
+cmd='docker-compose exec ttrss curl -v http://localhost:8080/'
 
 set -x
 
