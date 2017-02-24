@@ -20,9 +20,7 @@ RUN apt-get update \
 RUN php5enmod mcrypt
 
 # add ttrss as the only nginx site
-ADD ttrss.nginx.conf /etc/nginx/sites-available/ttrss
-RUN ln -s /etc/nginx/sites-available/ttrss /etc/nginx/sites-enabled/ttrss
-RUN rm /etc/nginx/sites-enabled/default
+ADD ttrss.nginx.conf /etc/nginx/sites-enabled/default
 
 # install ttrss and patch configuration
 WORKDIR /var/www
