@@ -1,23 +1,28 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 RUN apt-get update \
     && apt-get install -y \
        curl \
        nginx \
        supervisor \
-       php5-fpm \
-       php5-cli \
-       php5-curl \
-       php5-gd \
-       php5-json \ 
-       php5-pgsql \
-       php5-mysql \
-       php5-mcrypt \
+       php-fpm \
+       php-cli \
+       php-curl \
+       php-gd \
+       php-json \ 
+       php-pgsql \
+       php-mysql \
+       php-mcrypt \
+       php7.0-mbstring \
+       php7.0-xml \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# for php-fpm7.0
+RUN mkdir -p /var/run/php
+
 # enable the mcrypt module
-RUN php5enmod mcrypt
+RUN phpenmod mcrypt
 
 # add ttrss as the only nginx site
 ADD ttrss.nginx.conf /etc/nginx/sites-available/ttrss
@@ -42,12 +47,12 @@ ENV DB_USER ttrss
 ENV DB_PASS ttrss
 
 # always re-configure database with current ENV when RUNning container, then monitor all services
-ADD configure-db.php /configure-db.php
+ADD configure.php /configure.php
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # from https://github.com/vishnubob/wait-for-it
 ADD wait-for-it.sh /bin/wait-for-it.sh
 
 CMD wait-for-it.sh $DB_HOST:$DB_PORT -t 30 -- \
-    #php /configure-db.php \
+    php /configure.php \
     && supervisord -c /etc/supervisor/conf.d/supervisord.conf

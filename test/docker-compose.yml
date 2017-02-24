@@ -6,6 +6,8 @@ services:
   restart: always
   links:
     - db:db
+  ports:
+    - "8001:80"
   environment:
       DB_ENV_USER: root
       DB_ENV_PASS: rootpass
