@@ -7,8 +7,17 @@ docker build -t test-ttrss .
 cd $OLDPWD
 
 function finish {
+	local exitCode=$?
+
 	echo -n "cleanup: "
-	docker-compose stop
+        docker-compose stop
+	
+	if [ "$exitCode" == "0" ]; then
+		echo "Test: SUCCESS"
+	else
+		echo "Test: failed"
+		exit $exitCode
+	fi
 }
 trap finish EXIT
 
@@ -19,11 +28,14 @@ docker-compose up -d ttrss
 #docker-compose logs ttrss
 sleep 1
 
-line=$(docker-compose exec ttrss curl -v http://localhost/ | grep "^< HTTP" | tr -d '\n' | tr -d '\r' )
+cmd='docker-compose exec ttrss curl -v http://localhost/'
 
-if [ "$line" == "< HTTP/1.1 200 OK" ]; then 
-	echo "TEST: SUCCESS"
-else
-	echo "TEST: failed => $line"
-	exit 1
-fi
+set -x
+
+# tests
+$cmd | grep "^< HTTP/1.1 200 OK" || exit 1
+$cmd | grep "^< Set-Cookie: ttrss_sid=deleted" || exit 1
+
+set +x
+
+
