@@ -45,12 +45,11 @@ ENV DB_PASS ttrss
 ADD configure.php /configure.php
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# from https://github.com/vishnubob/wait-for-it
-ADD wait-for-it.sh /bin/wait-for-it.sh
+ADD wait-for-db.sh /bin/wait-for-db
 
 HEALTHCHECK --interval=1m --timeout=3s \
 	 CMD curl --fail http://localhost:8080/ || exit 1
 
-CMD wait-for-it.sh $DB_HOST:$DB_PORT -t 30 -- \
+CMD wait-for-db  \
     php /configure.php \
     && supervisord -c /etc/supervisor/conf.d/supervisord.conf
