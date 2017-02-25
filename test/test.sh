@@ -17,12 +17,9 @@ function finish {
 }
 trap finish EXIT
 
-# build image
-cd ..
-docker build -t test-ttrss . 
-cd $OLDPWD
+# build docker image
+docker build -t test-ttrss ..
 
-# start composition
 docker-compose up -d db
 sleep 2
 docker-compose up -d ttrss
