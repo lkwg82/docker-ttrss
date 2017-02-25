@@ -19,6 +19,7 @@ RUN apt-get update \
 # enable the mcrypt module
 RUN php5enmod mcrypt
 
+# suppress exposign php version
 RUN sed -e 's#expose_php = On#expose_php = Off#' -i /etc/php5/fpm/php.ini
 
 # add ttrss as the only nginx site
