@@ -2,10 +2,6 @@
 
 set -e
 
-cd ..
-docker build -t test-ttrss . 
-cd $OLDPWD
-
 function finish {
 	local exitCode=$?
 
@@ -21,6 +17,12 @@ function finish {
 }
 trap finish EXIT
 
+# build image
+cd ..
+docker build -t test-ttrss . 
+cd $OLDPWD
+
+# start composition
 docker-compose up -d db
 sleep 2
 docker-compose up -d ttrss
