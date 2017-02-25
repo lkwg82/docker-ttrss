@@ -4,10 +4,12 @@ set -e
 
 function finish {
 	local exitCode=$?
+	set +x
 
 	echo -n "cleanup: "
         docker-compose down
 	
+	echo "-------"
 	if [ "$exitCode" == "0" ]; then
 		echo "Test: SUCCESS"
 	else
@@ -20,14 +22,16 @@ trap finish EXIT
 # build docker image
 docker build -t test-ttrss ..
 
-docker-compose up -d db
-sleep 2
-docker-compose up -d ttrss
+docker-compose up -d 
 
 #docker-compose logs ttrss
-sleep 1
 
-cmd='docker-compose exec ttrss curl -v http://localhost:8080/'
+cmd='docker-compose exec ttrss curl --fail -v http://localhost:8080/'
+
+# warmups
+$cmd > /dev/null || sleep 2
+$cmd > /dev/null || sleep 2
+$cmd > /dev/null || sleep 2
 
 set -x
 
