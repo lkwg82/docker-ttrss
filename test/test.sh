@@ -10,7 +10,7 @@ function finish {
 	local exitCode=$?
 
 	echo -n "cleanup: "
-        docker-compose stop
+        docker-compose down
 	
 	if [ "$exitCode" == "0" ]; then
 		echo "Test: SUCCESS"
