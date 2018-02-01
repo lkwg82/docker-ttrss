@@ -26,7 +26,7 @@ ADD nginx.conf /etc/nginx/sites-enabled/default
 
 # install ttrss and patch configuration
 WORKDIR /var/www
-RUN curl -SL https://tt-rss.org/gitlab/fox/tt-rss/repository/archive.tar.gz?ref=17.1 | tar xzC /var/www --strip-components 1 \
+RUN curl -SL https://git.tt-rss.org/fox/tt-rss/archive/17.1.tar.gz |tar xzC /var/www --strip-components 1 \
     && chown www-data:www-data -R /var/www
 RUN cp config.php-dist config.php
 
